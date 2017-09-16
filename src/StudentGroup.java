@@ -1,6 +1,7 @@
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 
@@ -356,7 +357,26 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student getNextStudent(Student student) {
 		// Add your implementation here
-		return null;
+            
+            Student actual = null;
+                
+             if(student == null)
+                throw new IllegalArgumentException();
+            
+            int studIndex = this.getStudentIndex(student);
+            
+            if(studIndex == -1)
+                throw new IllegalArgumentException("Student doesnot exist");
+            else{
+                int walker=studIndex+1;
+                int len = this.students.length;
+                for(; walker<len; walker++){
+                    if(this.students[walker] != null){
+                        actual = this.students[walker];
+                    }
+                }
+            }
+            return actual;
 	}
         
         
@@ -377,4 +397,35 @@ public class StudentGroup implements StudentArrayOperation {
             return -1;
   
         }
+        
+        public static int getAge(Date date1) {
+
+            int age = 0;
+            try {
+                Calendar now = Calendar.getInstance();
+                Calendar dob = Calendar.getInstance();
+                dob.setTime(date1);
+                if (dob.after(now)) {
+                    throw new IllegalArgumentException("Can't be born in the future");
+                }
+                int year1 = now.get(Calendar.YEAR);
+                int year2 = dob.get(Calendar.YEAR);
+                age = year1 - year2;
+                int month1 = now.get(Calendar.MONTH);
+                int month2 = dob.get(Calendar.MONTH);
+                if (month2 > month1) {
+                    age--;
+                } else if (month1 == month2) {
+                    int day1 = now.get(Calendar.DAY_OF_MONTH);
+                    int day2 = dob.get(Calendar.DAY_OF_MONTH);
+                    if (day2 > day1) {
+                        age--;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return age ;
+
+            }
 }
