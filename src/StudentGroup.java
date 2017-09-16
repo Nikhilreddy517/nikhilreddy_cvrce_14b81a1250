@@ -304,14 +304,23 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public Student[] getByBirthDate(Date date) {
 		// Add your implementation here
+                
+                if(date == null)
+                    throw new IllegalArgumentException();
+                
                 Student[] some = new Student[this.size];
                 int startIndex = 0;
                 int walker = 0;
+                int len = this.students.length;
                 
-                
-                
-                    
-		return null;
+                for(;walker<len; walker++){
+                    if((this.students[walker]).getBirthDate().before(date) || this.students[walker].getBirthDate().equals(date)){
+                        some[startIndex] = new Student(this.students[walker]);
+                        startIndex++;
+                    }
+                }
+                   
+		return some;
 	}
 
 	@Override
