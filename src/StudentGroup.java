@@ -1,3 +1,7 @@
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 
 /**
@@ -163,8 +167,10 @@ public class StudentGroup implements StudentArrayOperation {
             if(index<0 || index>=this.students.length)
                 throw new IllegalArgumentException();
             
-            this.students[index] = null;
-            this.size--;
+            if(this.students[index] != null){
+                this.students[index] = null;
+                this.size--;
+            }
             
             return;
             
@@ -174,45 +180,137 @@ public class StudentGroup implements StudentArrayOperation {
 	public void remove(Student student) {
 		// Add your implementation here
             
-            int walker = 0;
-            int len = this.students.length;
+            if(student == null)
+                throw new IllegalArgumentException();
+
+            int studIndex = this.getStudentIndex(student);
             
-            for(;walker<len;walker++){
-                if(!(this.students[walker] == null)){
-                    
-                }
-                
+            
+            if(studIndex == -1)
+                throw new IllegalArgumentException("Student not exist");
+            else{
+                this.students[studIndex] = null;
+                this.size--;
             }
+                        
+            return;
+            
 	}
 
 	@Override
 	public void removeFromIndex(int index) {
 		// Add your implementation here
+            
+            if(index<0 || index>=this.students.length)
+                throw new IllegalArgumentException();
+            
+            int walker = index+1;
+            int len = this.students.length;
+            
+            for(;walker<len; walker++){
+                if(this.students[walker] != null){
+                    this.students[walker] = null;
+                    this.size--;
+                }
+            }
+                
+            return;
+            
 	}
 
 	@Override
 	public void removeFromElement(Student student) {
 		// Add your implementation here
-	}
+            if(student == null)
+                throw new IllegalArgumentException();
+            
+            int studIndex = this.getStudentIndex(student);
+            
+            if(studIndex == -1)
+                throw new IllegalArgumentException("Student doesnot exist");
+            else{
+                int walker;
+                int len = this.students.length;
+                
+                for(walker=studIndex+1; walker<len; walker++){
+                    if(this.students[walker] != null){
+                        this.students[walker] = null;
+                        this.size--;
+                    }
+                }
+            }
+    
+          return;
+          
+        }
 
 	@Override
 	public void removeToIndex(int index) {
 		// Add your implementation here
+            
+            if(index<0 || index>=this.students.length)
+                throw new IllegalArgumentException();
+            
+            int walker = 0;
+            
+            for(;walker<index; walker++){
+                if(this.students[walker] != null){
+                    this.students[walker] = null;
+                    this.size--;
+                }
+            }
+            
+            return;
 	}
 
 	@Override
 	public void removeToElement(Student student) {
 		// Add your implementation here
+            
+             if(student == null)
+                throw new IllegalArgumentException();
+            
+            int studIndex = this.getStudentIndex(student);
+            
+            if(studIndex == -1)
+                throw new IllegalArgumentException("Student doesnot exist");
+            else{
+                int walker=0;
+                
+                for(; walker<studIndex; walker++){
+                    if(this.students[walker] != null){
+                        this.students[walker] = null;
+                        this.size--;
+                    }
+                }
+            }
+            return;
 	}
 
 	@Override
 	public void bubbleSort() {
 		// Add your implementation here
+            
+            Arrays.sort(students, new Comparator<Student>(){
+
+                @Override
+                public int compare(Student s1, Student s2) {
+                    return s1.compareTo(s2);
+                }
+            });
+            
 	}
 
 	@Override
 	public Student[] getByBirthDate(Date date) {
 		// Add your implementation here
+                Student[] some = new Student[this.size];
+                int startIndex = 0;
+                int walker = 0;
+                
+                
+                
+                    
 		return null;
 	}
 
@@ -251,4 +349,23 @@ public class StudentGroup implements StudentArrayOperation {
 		// Add your implementation here
 		return null;
 	}
+        
+        
+        public int getStudentIndex(Student student){
+            
+            int walker = 0;
+            int len = this.students.length;
+            
+            for(;walker<len;walker++){
+                if(!(this.students[walker] == null)){
+                    if(student.compareTo(this.students[walker])== 0){
+                        return walker;
+                    }
+                }
+                
+            }
+            
+            return -1;
+  
+        }
 }
