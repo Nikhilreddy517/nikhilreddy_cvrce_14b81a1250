@@ -339,13 +339,36 @@ public class StudentGroup implements StudentArrayOperation {
 	@Override
 	public int getCurrentAgeByDate(int indexOfStudent) {
 		// Add your implementation here
-		return 0;
+            if(indexOfStudent<0 || indexOfStudent>=this.students.length)
+                throw new IllegalArgumentException();
+            
+            if(this.students[indexOfStudent] == null)
+                throw new IllegalArgumentException();
+            
+           return this.getAge(this.students[indexOfStudent].getBirthDate());
 	}
 
 	@Override
 	public Student[] getStudentsByAge(int age) {
 		// Add your implementation here
-		return null;
+            
+                Student[] some = new Student[this.size];
+                int start = 0;
+                int walker = 0;
+                int len = this.students.length;
+                
+                for(; walker<len; walker++){
+                    
+                    if(this.students[walker] != null){
+                        if(this.getAge(this.students[walker].getBirthDate()) == age){
+                            some[start] = new Student(this.students[walker]);
+                            start++;
+                        }
+                    }
+                    
+                }
+            
+		return some;
 	}
 
 	@Override
@@ -398,7 +421,7 @@ public class StudentGroup implements StudentArrayOperation {
   
         }
         
-        public static int getAge(Date date1) {
+        public  int getAge(Date date1) {
 
             int age = 0;
             try {
